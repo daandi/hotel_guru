@@ -1,0 +1,24 @@
+{
+  "name": "hotel_guru",
+  "version": "1.0.0",
+  "description": "Endpoint for alexa hotel guru app",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "publish": "zip -r skill.zip ./ && aws lambda update-function-code --function-name=hotel_guru --zip-file=fileb://skill.zip && rm -f skill.zip"
+  },
+  "author": "Andreas Neumann",
+  "license": "ISC",
+  "dependencies": {
+    "alexa-sdk": "^1.0.6",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "lodash": "^4.17.4",
+    "mocha": "^3.2.0",
+    "request": "^2.79.0",
+    "request-promise": "^4.1.1"
+  },
+  "devDependencies": {
+    "aws-lambda-mock-context": "^3.0.1"
+  }
+}

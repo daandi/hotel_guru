@@ -1,0 +1,10 @@
+GetPassionHotel wie ist das {PASSION} im {HOTEL}
+GetPassionHotel wie ist die {PASSION} im {HOTEL}
+GetPassionHotel wie ist der {PASSION} im {HOTEL}
+GetPassionHotel wie sind die {PASSION} im {HOTEL}
+GetPassionHotel kann man im {HOTEL} {PASSION}
+GetPassion Zum Thema {PASSION}
+GetPassion Mehr zu {PASSION}
+GetPassion Reviews zu {PASSION}
+GetHotel Das {HOTEL}
+GetHotel Hotel {HOTEL}

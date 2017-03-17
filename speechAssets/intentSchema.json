@@ -1,0 +1,47 @@
+{
+  "intents": [
+    {
+      "intent": "GetPassionHotel",
+      "slots": [
+        {
+          "name": "PASSION",
+          "type": "LIST_OF_PASSIONS"
+        },
+        {
+          "name": "HOTEL",
+          "type": "LIST_OF_HOTELS"
+        }
+      ]
+    },
+    {
+      "intent": "GetPassion",
+      "slots": [
+        {
+          "name": "PASSION",
+          "type": "LIST_OF_PASSIONS"
+        }
+      ]
+    },
+    {
+      "intent": "GetHotel",
+      "slots": [
+        {
+          "name": "HOTEL",
+          "type": "LIST_OF_HOTELS"
+        }
+      ]
+    },
+    {
+      "intent": "AMAZON.RepeatIntent"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "AMAZON.CancelIntent"
+    }
+  ]
+}
