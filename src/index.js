@@ -71,10 +71,11 @@ const handlers = {
     },
     'GetHotel': function() {
         const hotel = this.event.request.intent.slots.HOTEL.value;
-         if (! hotel == null) {
+            if (! hotel == null) {
             this.attributes[HOTEL_KEY] = hotel;
         }
-        if(this.attributes[PASSION_KEY] == null) {
+        const passion = this.attributes[PASSION_KEY];
+        if(passion == null) {
              this.emit(':ask', "Zu welchem Thema möchtest du etwas wissen?", "Sage z.B. Zum Thema Essen.");
         }
         this.emit('GetPassionHotel');
