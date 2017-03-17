@@ -44,11 +44,11 @@ const handlers = {
             this.attributes[HOTEL_KEY] = hotel;
         }
 
-        if(this.attributes[PASSION_KEY] == null) {
+        if(this.attributes[PASSION_KEY] == null && passion == null) {
             this.emit(':ask', "Zu welchem Thema möchtest du etwas wissen?", "Sage z.B. Zum Thema Essen.");
         } 
 
-        if(this.attributes[HOTEL_KEY] == null) {
+        if(this.attributes[HOTEL_KEY] == null && hotel == null) {
             this.emit(':ask', "Zu welchem Hotel möchtest du etwas wissen?", "Sage z.B. Hotel Dana Beach oder Das Adlon Berlin");
         }
 
@@ -63,7 +63,10 @@ const handlers = {
             };
 
             this.emit(':tellWithCard', answer, hotelObj.name, `--`, imageObj);
-        });
+        });//failure not handled
+      }).error( (err) => {
+          this.attributes[HOTEL_KEY] = null;
+          this.emit(':ask', `Zu ${hotel} weiß ich leider nichts. Du kannst mich aber gerne zu einem anderen Hotel fragen.`, "Sage z.B. Hotel Dana Beach oder Das Adlon Berlin");
       });
     },
     'GetHotel': function() {
