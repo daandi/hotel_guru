@@ -11,7 +11,7 @@ const HOTEL_KEY = 'hotel';
 const languageStrings = {
     'de-DE': {
         'translation': {
-            'SKILL_NAME' : `Holidaycheck ${APP_ID}`,
+            'SKILL_NAME' : 'Holidaycheck Hotel Guru',
             'HELP_MESSAGE' : 'Wie sind die Zimmer im Adlon Berlin - Wie ist das Wasser im Dana Beach',
             'HELP_REPROMPT' : 'Wie kann ich dir helfen?',
             'STOP_MESSAGE' : 'Ich hoffe ich konnte dir helfen mehr über das Hotel zu erfahren'
