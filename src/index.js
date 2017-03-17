@@ -29,9 +29,10 @@ exports.handler = function(event, context, callback) {
 
 
 const handlers = {
-    'LaunchRequest': () => this.emit('AMAZON.HelpIntent'),
-    'GetPassionHotel': () => {
-
+    'LaunchRequest': function(){ 
+        this.emit('AMAZON.HelpIntent') 
+    },
+    'GetPassionHotel': function(){
         const passion = this.event.request.intent.slots.PASSION.value;
         const hotel = this.event.request.intent.slots.HOTEL.value;
         console.log('passion:' + passion + " " + "hotel:" + hotel);
@@ -52,11 +53,10 @@ const handlers = {
         }
 
         console.log('Got passion and hotel: passion:' + passion + " " + "hotel:" + hotel);
+
         psc.getHotelUUID(hotel).then(hotelObj => {
           psc.getHotelReviews(hotelObj.id, passion).then( reviewResult => {
-          const answer =
-            `Holidaycheck Urlauber zum Thema ${passion} im ${hotelObj.name} <break time="1.5s"/>  ${reviewResult}`;
-
+          const answer = `Holidaycheck Urlauber zum Thema ${passion} im ${hotelObj.name} <break time="1.5s"/>  ${reviewResult}`;
             const imageObj = {
                 smallImageUrl: `https://media-cdn.holidaycheck.com/w_310,h_280,c_fill,q_80/ugc/images/${hotelObj.id}`,
                 largeImageUrl: `https://media-cdn.holidaycheck.com/w_1920,h_1080,c_fit,q_80/ugc/images/${hotelObj.id}`
@@ -66,35 +66,35 @@ const handlers = {
         });
       });
     },
-    'GetHotel': () => {
+    'GetHotel': function() {
         const hotel = this.event.request.intent.slots.HOTEL.value;
          if (! hotel == null) {
-            session[HOTEL_KEY] = hotel;
+            this.session[HOTEL_KEY] = hotel;
         }
         if(this.session[PASSION_KEY] == null) {
              this.emit(':ask', "Zu welchem Thema möchtest du etwas wissen?", "Sage z.B. Zum Thema Essen.");
         }
         this.emit('GetPassionHotel');
     },
-    'GetPassion': () => {
+    'GetPassion':function(){
         const passion = this.event.request.intent.slots.PASSION.value;
          if (! passion == null) {
-            session[PASSION_KEY] = passion;
+            this.session[PASSION_KEY] = passion;
         }
          if(this.session[HOTEL_KEY] == null) {
              this.emit(':ask', "Zu welchem Hotel möchtest du etwas wissen?", "Sage z.B. Hotel Dana Beach oder Das Adlon Berlin");
         }
         this.emit('GetPassionHotel');
     },
-    'AMAZON.HelpIntent':  () => {
+    'AMAZON.HelpIntent': function() {
         const speechOutput = this.t("HELP_MESSAGE");
         const reprompt = this.t("HELP_MESSAGE");
         this.emit(':ask', speechOutput, reprompt);
     },
-    'AMAZON.CancelIntent': () => {
+    'AMAZON.CancelIntent': function() {
         this.emit(':tell', this.t("STOP_MESSAGE"));
     },
-    'AMAZON.StopIntent': () => {
+    'AMAZON.StopIntent': function() {
         this.emit(':tell', this.t("STOP_MESSAGE"));
     }
 };
