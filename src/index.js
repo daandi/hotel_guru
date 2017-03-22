@@ -23,7 +23,7 @@ const languageStrings = {
 exports.handler = function(event, context, callback) {
     const alexa = Alexa.handler(event, context);
     alexa.APP_ID = APP_ID;
-    alexa.dynamoDBTableName = 'hotel_guru';
+    //alexa.dynamoDBTableName = 'hotel_guru';
     alexa.resources = languageStrings;
     alexa.registerHandlers(handlers);
     alexa.execute();
@@ -94,13 +94,13 @@ const handlers = {
          if (passion) {
             this.attributes[PASSION_KEY] = passion;
         }
-
-        if(! this.attributes[HOTEL_KEY]) {
+        const hotel = this.attributes[HOTEL_KEY];
+        if(! hotel) {
              this.emit(':ask', "Zu welchem Hotel möchtest du etwas wissen?", "Sage z.B. Hotel Dana Beach oder Das Adlon Berlin");
         }
         else {
              this.emit('GetPassionHotel');
-        }
+        };
     },
     'AMAZON.HelpIntent': function() {
         const speechOutput = this.t("HELP_MESSAGE");
