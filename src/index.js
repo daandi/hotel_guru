@@ -11,6 +11,7 @@ const HOTEL_KEY = 'hotel';
 const languageStrings = {
     'de-DE': {
         'translation': {
+            'HELLO_MESSAGES' : [],
             'SKILL_NAME' : 'Holidaycheck Hotel Guru',
             'HELP_MESSAGE' : 'Wie sind die Zimmer im Adlon Berlin - Wie ist das Wasser im Dana Beach',
             'HELP_REPROMPT' : 'Wie kann ich dir helfen?',
@@ -29,8 +30,8 @@ exports.handler = function(event, context, callback) {
 
 
 const handlers = {
-    'LaunchRequest': function(){ 
-        this.emit('AMAZON.HelpIntent') 
+    'LaunchRequest': function(){
+        this.emit('AMAZON.HelpIntent')
     },
     'GetPassionHotel': function(){
         const passion = this.event.request.intent.slots.PASSION.value;
@@ -46,7 +47,7 @@ const handlers = {
 
         if(this.attributes[PASSION_KEY] == null && passion == null) {
             this.emit(':ask', "Zu welchem Thema möchtest du etwas wissen?", "Sage z.B. Zum Thema Essen.");
-        } 
+        }
 
         if(this.attributes[HOTEL_KEY] == null && hotel == null) {
             this.emit(':ask', "Zu welchem Hotel möchtest du etwas wissen?", "Sage z.B. Hotel Dana Beach oder Das Adlon Berlin");
@@ -54,15 +55,17 @@ const handlers = {
 
         console.log('Got passion and hotel: passion:' + passion + " " + "hotel:" + hotel);
 
-        psc.getHotelUUID(hotel).then(hotelObj => {
-          psc.getHotelReviews(hotelObj.id, passion).then( reviewResult => {
-          const answer = `Holidaycheck Urlauber zum Thema ${passion} im ${hotelObj.name} <break time="1.5s"/>  ${reviewResult}`;
+        psc.getHotelUUID(hotel).then( (hotelObj) => {
+          psc.getHotelReviews(hotelObj.id, passion).then( (reviewResult) => {
+            const speechAnswer =
+                `Holidaycheck Urlauber zum Thema ${passion} im ${hotelObj.name} <break time="1.5s"/>  ${reviewResult}`;
             const imageObj = {
                 smallImageUrl: `https://media-cdn.holidaycheck.com/w_310,h_280,c_fill,q_80/ugc/images/${hotelObj.id}`,
                 largeImageUrl: `https://media-cdn.holidaycheck.com/w_1920,h_1080,c_fit,q_80/ugc/images/${hotelObj.id}`
             };
+            const cardTextAnswer = ``;
 
-            this.emit(':tellWithCard', answer, hotelObj.name, `--`, imageObj);
+            this.emit(':tellWithCard', speechAnswer, hotelObj.name, `--`, imageObj);
         });//failure not handled
       }).error( (err) => {
           this.attributes[HOTEL_KEY] = null;
