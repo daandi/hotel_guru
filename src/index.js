@@ -56,14 +56,14 @@ const handlers = {
         console.log('Got passion and hotel: passion:' + passion + " " + "hotel:" + hotel);
 
         psc.getHotelUUID(hotel).then( (hotelObj) => {
-          psc.getHotelReviews(hotelObj.id, passion).then( (reviewResult) => {
+          psc.getHotelReviewsAsArray(hotelObj.id, passion).then( (answers) => {
             const speechAnswer =
-                `Holidaycheck Urlauber zum Thema ${passion} im ${hotelObj.name} <break time="1.5s"/>  ${reviewResult}`;
+                `Holidaycheck Urlauber zum Thema ${passion} im ${hotelObj.name} <break time="1.5s"/>  ${psc.reviewsSpeechAnswer(answers)}`;
             const imageObj = {
                 smallImageUrl: `https://media-cdn.holidaycheck.com/w_310,h_280,c_fill,q_80/ugc/images/${hotelObj.id}`,
                 largeImageUrl: `https://media-cdn.holidaycheck.com/w_1920,h_1080,c_fit,q_80/ugc/images/${hotelObj.id}`
             };
-            const cardTextAnswer = ``;
+            const cardTextAnswer = psc.reviewsTextAnswer(answers);
 
             this.emit(':tellWithCard', speechAnswer, hotelObj.name, `--`, imageObj);
         });//failure not handled
