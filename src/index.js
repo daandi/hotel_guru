@@ -65,7 +65,7 @@ const handlers = {
             };
             const cardTextAnswer = psc.reviewsTextAnswer(answers);
 
-            this.emit(':tellWithCard', speechAnswer, hotelObj.name, `--`, imageObj);
+            this.emit(':tellWithCard', speechAnswer, hotelObj.name, cardTextAnswer, imageObj);
         });//failure not handled
       }).error( (err) => {
           this.attributes[HOTEL_KEY] = null;
