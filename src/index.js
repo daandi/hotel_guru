@@ -66,7 +66,10 @@ const handlers = {
             const cardTextAnswer = psc.reviewsTextAnswer(answers);
 
             this.emit(':tellWithCard', speechAnswer, hotelObj.name, cardTextAnswer, imageObj);
-        });//failure not handled
+        }).error((err) => {
+              this.attributes[PASSION_KEY] = null;
+              this.emit(':ask', `Zu Passion ${passion} weiß ich leider nichts. Du kannst mich aber gerne zu einem anderen Thema fragen.`, "Sage z.B. Hotel Dana Beach oder Das Adlon Berlin");
+        });
       }).error( (err) => {
           this.attributes[HOTEL_KEY] = null;
           this.emit(':ask', `Zu ${hotel} weiß ich leider nichts. Du kannst mich aber gerne zu einem anderen Hotel fragen.`, "Sage z.B. Hotel Dana Beach oder Das Adlon Berlin");
