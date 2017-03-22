@@ -6,12 +6,11 @@ var PASSION_ENDPOINT = 'https://www.holidaycheck.de/svc/review-search-api/passio
 var REVIEW_ENDPOINT = 'https://www.holidaycheck.de/svc/review-search-api/review-search'
 var SEARCH_ENDPOINT = 'https://www.holidaycheck.de/svc/search-api/search'
 var HOTEL_API_ENDPOINT = 'http://www.holidaycheck.com/svc/api-hotel/v3/hotel'
-var TENANT = 'passion_alexa';
+var TENANT = 'hotel_guru';
 
 function PassionSearchClient() {};
 
-PassionSearchClient.prototype.getPassion = function(passion) {
-};
+PassionSearchClient.prototype.getPassion = function(passion) {};
 
 PassionSearchClient.prototype.passionInfo = function(passion) {
   return this.getPassion(passion).then(
@@ -148,6 +147,60 @@ PassionSearchClient.prototype.getHotelReviews = function(hotelUUID, passion) {
     });
     return answer.replace(/<\/?em>/g,"");
   });
+};
+
+
+PassionSearchClient.prototype.getHotelReviewsAsArray = function (hotelUUID, passion) {
+    var options = {
+        method: 'GET',
+        uri: REVIEW_ENDPOINT,
+        qs: {
+            tenant: TENANT,
+            limit: 3,
+            query: passion,
+            hotelUUID: hotelUUID
+        },
+        resolveWithFullResponse: true,
+        json: true
+    };
+
+    return rp(options).then(resp => {
+        const reviews = resp.body.reviews;
+        var answers = [];
+        reviews.map(data => {
+            var answer = {
+              'user' : data.review.user.name,
+              'text' : []
+            }
+
+            const t = data.highlights;
+            if (t.title != undefined) {
+                answer.text.unshift(t.title);
+            }
+
+            if (t["texts.sport"] != undefined) {
+                answer.text.unshift(t["texts.sport"]);
+            }
+            if (t["texts.general"] != undefined) {
+                answer.text.unshift(t["texts.general"]);
+            }
+            if (t["texts.hotel"] != undefined) {
+                answer.text.unshift(t["texts.hotel"]);
+            }
+            if (t["texts.service"] != undefined) {
+                answer.text.unshift(t["texts.service"]);
+            }
+            if (t["texts.food"] != undefined) {
+                answer.text.unshift(t["texts.food"]);
+            }
+            if (t["texts.location"] != undefined) {
+                answer.text.unshift(t["texts.location"]);
+            }
+            answers.push(answer);
+
+        });
+        return answers;
+    });
 };
 
 PassionSearchClient.prototype.getDestinationUUID = function(destination) {

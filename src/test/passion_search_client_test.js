@@ -119,6 +119,24 @@ describe('PassionSearchClient', function(){
       });
   });
 
+    describe('#getHotelReviewsAsArray', () => {
+        const hotelUUID = "1aa4c4ad-f9ea-3367-a163-8a3a6884d450";
+        const passion = 'essen'
+        var res = subject.getHotelReviewsAsArray(hotelUUID, passion).then(res => res);
+        it(`returns 3 testimonials for ${passion} for hotel`, () => {
+            return expect(res).to.eventually.have.length(3);
+        });
+        it(`returns answers that contain a name`, () => {
+            return expect(res.then(r => r[0])).to.eventually.have.property['name'];
+        });
+        it(`returns answers that contain text`, () => {
+            return expect(res.then(r => r[0])).to.eventually.have.property['text'];
+        });
+        it(`returns answers that contain text which is not empty`, () => {
+            return expect(res.then(r => r[0].text)).to.eventually.have.length > 0;
+        });
+    });
+
   describe('#getHotelReviews golf', () => {
     const hotelUUID = "1aa4c4ad-f9ea-3367-a163-8a3a6884d450";
     const passion = 'golf'
