@@ -16,9 +16,10 @@ const languageStrings = {
             'HELP_MESSAGES' : [
                 'Wie sind die Zimmer im Adlon Berlin',
                 'Wie ist das Bier im Westin Grand Munich',
-                'Wie sind die Zimmer im Adlon Berlin',
                 'Kann man im Bayrischen Hof essen',
-                'Wie ist der Pool im Iberostar Fuerteventura'
+                'Wie ist der Pool im Iberostar Fuerteventura',
+                'Wie ist die Betreuung im Kinderhotel Bär',
+                'Wie ist der Golfplatz im Rio Kaya Palazo'
             ],
             'HELP_REPROMPT' : 'Wie kann ich dir helfen?',
             'STOP_MESSAGES' : [
@@ -143,7 +144,7 @@ const handlers = {
     'AMAZON.HelpIntent': function() {
         const speechOutput = randomPhrase(this.t("HELP_MESSAGES"));
         const reprompt = randomPhrase(this.t("HELP_MESSAGES"));
-        this.emit(':ask', speechOutput, reprompt);
+        this.emit(':ask', 'Sage ' + speechOutput, reprompt);
     },
     'AMAZON.CancelIntent': function() {
         this.emit(':tell', randomPhrase(this.t("STOP_MESSAGES")));
