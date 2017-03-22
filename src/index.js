@@ -35,8 +35,26 @@ const handlers = {
         this.emit('AMAZON.HelpIntent')
     },
     'GetPassionHotel': function(){
-        const passion = this.event.request.intent.slots.PASSION.value;
-        const hotel = this.event.request.intent.slots.HOTEL.value;
+        const passionSlot = this.event.request.intent.slots.PASSION;
+        const hotelSlot = this.event.request.intent.slots.HOTEL;
+
+        var passion;
+        var hotel;
+
+        if(passionSlot) {
+            passion = passionSlot.value;
+        }
+        else if(this.attributes[PASSION_KEY]) {
+            passion = this.attributes[PASSION_KEY];
+        }
+
+        if(hotelSlot) {
+            hotel = hotelSlot.value;
+        }
+        else if (this.attributes[HOTEL_KEY]) {
+            hotel = this.attributes[HOTEL_KEY];
+        }
+
         console.log('passion:' + passion + " " + "hotel:" + hotel);
 
         if (passion) {
@@ -46,10 +64,10 @@ const handlers = {
             this.attributes[HOTEL_KEY] = hotel;
         }
 
-        if( ! this.attributes[PASSION_KEY] && ! passion) {
+        if(! passion) {
             this.emit(':ask', "Zu welchem Thema möchtest du etwas wissen?", "Sage z.B. Zum Thema Essen.");
         }
-        else if(! this.attributes[HOTEL_KEY] && ! hotel) {
+        else if(! hotel) {
             this.emit(':ask', "Zu welchem Hotel möchtest du etwas wissen?", "Sage z.B. Hotel Dana Beach oder Das Adlon Berlin");
         }
         else {
@@ -95,6 +113,7 @@ const handlers = {
             this.attributes[PASSION_KEY] = passion;
         }
         const hotel = this.attributes[HOTEL_KEY];
+
         if(! hotel) {
              this.emit(':ask', "Zu welchem Hotel möchtest du etwas wissen?", "Sage z.B. Hotel Dana Beach oder Das Adlon Berlin");
         }

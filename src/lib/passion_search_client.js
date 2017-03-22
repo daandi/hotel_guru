@@ -101,9 +101,10 @@ PassionSearchClient.prototype.getHotelDetails = (hotelUUID => {
 
 PassionSearchClient.prototype.reviewsSpeechAnswer = function(answers) {
     var answerText = "";
-    const pause = ' <break time="1s"/> ';
+    const pause = ' <break time="0.5s"/> ';
+    const longPause = ' <break time="1s"/> ';
     answers.map(answer => {
-      answerText += `${answer.name} sagt: ` + pause + answer.text.reduce(function(acc,val){ return acc + pause + val;}, "");
+      answerText += `${answer.user} sagt: ` + longPause + answer.text.reduce(function(acc,val){ return acc + pause + val;}, "");
     });
     return answerText.replace(/<\/?em>/g,"");
 };
@@ -112,7 +113,7 @@ PassionSearchClient.prototype.reviewsTextAnswer = function (answers) {
     var answerText = "";
     const pause = '\n\t';
     answers.map(answer => {
-        answerText += `${answer.name} sagt: ` + pause + answer.text.reduce(function (acc, val) {
+        answerText += `${answer.user} sagt: ` + pause + answer.text.reduce(function (acc, val) {
                 return acc + pause + val;
             }, "");
     });
@@ -143,8 +144,9 @@ PassionSearchClient.prototype.getHotelReviewsAsArray = function (hotelUUID, pass
         const reviews = resp.body.reviews;
         var answers = [];
         reviews.map(data => {
+            const name = data.review.user.name;
             var answer = {
-              'user' : data.review.user.name,
+              'user' : name,
               'text' : []
             }
 
@@ -172,7 +174,6 @@ PassionSearchClient.prototype.getHotelReviewsAsArray = function (hotelUUID, pass
                 answer.text.unshift(t["texts.location"]);
             }
             answers.push(answer);
-
         });
         return answers;
     });
