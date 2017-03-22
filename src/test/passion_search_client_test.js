@@ -114,7 +114,7 @@ describe('PassionSearchClient', function(){
     const hotelUUID = "1aa4c4ad-f9ea-3367-a163-8a3a6884d450";
     const passion = 'essen'
     it(`returns testimonials for ${passion} for hotel`, () => {
-      var res = subject.getHotelReviewsAsArray(hotelUUID, passion).then(res => subject.getHotelReviews(res));
+      var res = subject.getHotelReviews(hotelUUID, passion).then(res => res);
       return expect(res).to.eventually.contain('Essen');
       });
   });

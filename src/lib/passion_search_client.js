@@ -99,13 +99,29 @@ PassionSearchClient.prototype.getHotelDetails = (hotelUUID => {
   });
 })
 
-PassionSearchClient.prototype.getHotelReviews = function(answers) {
+PassionSearchClient.prototype.reviewsSpeechAnswer = function(answers) {
     var answerText = "";
     const pause = ' <break time="1s"/> ';
-    answers.map(data => {
-        answerText += `${data.name} sagt: ` + pause + data.text.reduce(function(acc,val){ return acc + pause + val;}, "");
+    answers.map(answer => {
+      answerText += `${answer.name} sagt: ` + pause + answer.text.reduce(function(acc,val){ return acc + pause + val;}, "");
     });
     return answerText.replace(/<\/?em>/g,"");
+};
+
+PassionSearchClient.prototype.reviewsTextAnswer = function (answers) {
+    var answerText = "";
+    const pause = '\n\t';
+    answers.map(answer => {
+        answerText += `${answer.name} sagt: ` + pause + answer.text.reduce(function (acc, val) {
+                return acc + pause + val;
+            }, "");
+    });
+    return answerText.replace(/<\/?em>/g, "");
+};
+
+PassionSearchClient.prototype.getHotelReviews = function (hotelUUID, passion) {
+    const psc = new PassionSearchClient();
+    return psc.getHotelReviewsAsArray(hotelUUID, passion).then(answers => psc.reviewsSpeechAnswer(answers));
 };
 
 
