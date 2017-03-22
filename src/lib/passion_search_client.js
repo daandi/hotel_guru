@@ -99,54 +99,13 @@ PassionSearchClient.prototype.getHotelDetails = (hotelUUID => {
   });
 })
 
-PassionSearchClient.prototype.getHotelReviews = function(hotelUUID, passion) {
-  var options = {
-    method: 'GET',
-    uri: REVIEW_ENDPOINT,
-    qs: {
-      tenant: TENANT,
-      limit: 3,
-      query: passion,
-      hotelUUID: hotelUUID
-    },
-    resolveWithFullResponse: true,
-    json: true
-  };
-
-  return rp(options).then(resp => {
-    const reviews = resp.body.reviews;
-    var answer = "";
-    const pause = '<break time="1s"/>';
-    reviews.map(data => {
-        answer += `${data.review.user.name} sagt: `;
-
-      const t = data.highlights;
-      if(t.title != undefined) {
-        answer += t.title + pause;
-      }
-
-      if(t["texts.sport"] != undefined) {
-        answer += t["texts.sport"] + pause;
-      }
-      if(t["texts.general"] != undefined) {
-        answer += t["texts.general"] + pause;
-      }
-      if(t["texts.hotel"] != undefined) {
-        answer +=t["texts.hotel"] + pause;
-      }
-      if(t["texts.service"] != undefined) {
-        answer += t["texts.service"] + pause;
-      }
-      if(t["texts.food"] != undefined) {
-        answer += t["texts.food"] + pause;
-      }
-      if(t["texts.location"] != undefined) {
-        answer += t["texts.location"] + pause;
-      }
-
+PassionSearchClient.prototype.getHotelReviews = function(answers) {
+    var answerText = "";
+    const pause = ' <break time="1s"/> ';
+    answers.map(data => {
+        answerText += `${data.name} sagt: ` + pause + data.text.reduce(function(acc,val){ return acc + pause + val;}, "");
     });
-    return answer.replace(/<\/?em>/g,"");
-  });
+    return answerText.replace(/<\/?em>/g,"");
 };
 
 
