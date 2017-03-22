@@ -127,7 +127,7 @@ describe('PassionSearchClient', function(){
             return expect(res).to.eventually.have.length(3);
         });
         it(`returns answers that contain a name`, () => {
-            return expect(res.then(r => r[0])).to.eventually.have.property['name'];
+            return expect(res.then(r => r[0])).to.eventually.have.property['user'];
         });
         it(`returns answers that contain text`, () => {
             return expect(res.then(r => r[0])).to.eventually.have.property['text'];

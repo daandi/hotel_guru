@@ -11,14 +11,33 @@ var HOTEL_KEY = 'hotel';
 const languageStrings = {
     'de-DE': {
         'translation': {
-            'HELLO_MESSAGES' : [],
+            'HELLO_MESSAGES' : ["Hi", "Servus", "Hotel Guru zu deinen Diensten"],
             'SKILL_NAME' : 'Holidaycheck Hotel Guru',
-            'HELP_MESSAGE' : 'Wie sind die Zimmer im Adlon Berlin - Wie ist das Wasser im Dana Beach',
+            'HELP_MESSAGES' : [
+                'Wie sind die Zimmer im Adlon Berlin',
+                'Wie ist das Bier im Westin Grand Munich',
+                'Wie sind die Zimmer im Adlon Berlin',
+                'Kann man im Bayrischen Hof essen',
+                'Wie ist der Pool im Iberostar Fuerteventura'
+            ],
             'HELP_REPROMPT' : 'Wie kann ich dir helfen?',
-            'STOP_MESSAGE' : 'Ich hoffe ich konnte dir helfen mehr über das Hotel zu erfahren'
+            'STOP_MESSAGES' : [
+                'Ich hoffe ich konnte dir helfen mehr über das Hotel zu erfahren',
+                'Servus',
+                'Hotel Guro out',
+                'Gerne zu diensten'
+            ]
         }
     }
 };
+
+function randomPhrase(myData) {
+    // the argument is an array [] of words or phrases
+    var i = 0;
+    i = Math.floor(Math.random() * myData.length);
+    return (myData[i]);
+}
+
 
 exports.handler = function(event, context, callback) {
     const alexa = Alexa.handler(event, context);
@@ -122,14 +141,14 @@ const handlers = {
         };
     },
     'AMAZON.HelpIntent': function() {
-        const speechOutput = this.t("HELP_MESSAGE");
-        const reprompt = this.t("HELP_MESSAGE");
+        const speechOutput = randomPhrase(this.t("HELP_MESSAGES"));
+        const reprompt = randomPhrase(this.t("HELP_MESSAGES"));
         this.emit(':ask', speechOutput, reprompt);
     },
     'AMAZON.CancelIntent': function() {
-        this.emit(':tell', this.t("STOP_MESSAGE"));
+        this.emit(':tell', randomPhrase(this.t("STOP_MESSAGES")));
     },
     'AMAZON.StopIntent': function() {
-        this.emit(':tell', this.t("STOP_MESSAGE"));
+        this.emit(':tell', randomPhrase(this.t("STOP_MESSAGES")));
     }
 };
